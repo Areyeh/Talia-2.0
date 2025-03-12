@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Dropdown Fix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .instructions {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .currency-selector {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .currency-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            width: 150px;
+            z-index: 1000;
+        }
+        .currency-dropdown a {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #333;
+        }
+        .currency-dropdown a:hover {
+            background-color: #f5f5f5;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Currency Dropdown Fix</h1>
+    
+    <div class="instructions">
+        <h2>Problem</h2>
+        <p>The currency dropdown menu on your website is not showing all options (USD, EUR, GBP) when clicked.</p>
+        
+        <h2>Solution</h2>
+        <p>Copy and paste the following code into your browser's console when viewing your website:</p>
+        
+        <div class="code-block">
+            <pre>
+// Direct fix for currency dropdown
+(function() {
+    // Create completely new dropdown HTML
+    const newHTML = `
+        &lt;button class="dropdown-toggle" style="display: flex; align-items: center; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px 12px;">
+            &lt;i class="fas fa-coins">&lt;/i> &lt;span id="current-currency">ILS ₪&lt;/span> &lt;i class="fas fa-chevron-down">&lt;/i>
+        &lt;/button>
+        &lt;div id="currency-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background-color: white; border: 1px solid #e1e1e1; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 150px; z-index: 9999;">
+            &lt;a href="#" data-currency="ILS" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">ILS ₪&lt;/a>
+            &lt;a href="#" data-currency="USD" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">USD $&lt;/a>
+            &lt;a href="#" data-currency="EUR" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">EUR €&lt;/a>
+            &lt;a href="#" data-currency="GBP" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">GBP £&lt;/a>
+        &lt;/div>
+    `;
+    
+    // Replace the content of currency-selector
+    const currencySelector = document.querySelector('.currency-selector');
+    if (currencySelector) {
+        currencySelector.innerHTML = newHTML;
+        currencySelector.style.position = 'relative';
+        
+        // Add click event to toggle
+        const toggle = currencySelector.querySelector('.dropdown-toggle');
+        const dropdown = document.getElementById('currency-dropdown');
+        
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Add click events to currency options
+        const currencyLinks = dropdown.querySelectorAll('a');
+        currencyLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const currency = this.getAttribute('data-currency');
+                const currencyText = this.textContent;
+                
+                // Update display
+                document.getElementById('current-currency').textContent = currencyText;
+                
+                // Update localStorage
+                localStorage.setItem('currency', currency);
+                
+                // Hide dropdown
+                dropdown.style.display = 'none';
+                
+                // Show notification
+                alert('Currency changed to ' + currencyText);
+                
+                // Reload page to apply changes
+                location.reload();
+            });
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.currency-selector')) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+        console.log('Currency dropdown fix applied successfully!');
+    } else {
+        console.error('Currency selector not found!');
+    }
+})();
+            </pre>
+        </div>
+    </div>
+    
+    <h2>How to Use This Fix</h2>
+    <ol>
+        <li>Open your website in a browser</li>
+        <li>Right-click anywhere on the page and select "Inspect" or press F12</li>
+        <li>Click on the "Console" tab</li>
+        <li>Copy the code above and paste it into the console</li>
+        <li>Press Enter to run the code</li>
+        <li>The currency dropdown should now show all options when clicked</li>
+    </ol>
+    
+    <h2>Permanent Fix</h2>
+    <p>To make this fix permanent, you need to modify your website's code. Here's what to do:</p>
+    
+    <h3>Option 1: Add the fix as a script in your HTML</h3>
+    <p>Add the following script tag just before the closing &lt;/body&gt; tag in your index.html file:</p>
+    
+    <div class="code-block">
+        <pre>
+&lt;script&gt;
+    // Direct fix for currency dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create completely new dropdown HTML
+        const newHTML = `
+            &lt;button class="dropdown-toggle" style="display: flex; align-items: center; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px 12px;">
+                &lt;i class="fas fa-coins">&lt;/i> &lt;span id="current-currency">ILS ₪&lt;/span> &lt;i class="fas fa-chevron-down">&lt;/i>
+            &lt;/button>
+            &lt;div id="currency-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background-color: white; border: 1px solid #e1e1e1; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 150px; z-index: 9999;">
+                &lt;a href="#" data-currency="ILS" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">ILS ₪&lt;/a>
+                &lt;a href="#" data-currency="USD" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">USD $&lt;/a>
+                &lt;a href="#" data-currency="EUR" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">EUR €&lt;/a>
+                &lt;a href="#" data-currency="GBP" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">GBP £&lt;/a>
+            &lt;/div>
+        `;
+        
+        // Replace the content of currency-selector
+        const currencySelector = document.querySelector('.currency-selector');
+        if (currencySelector) {
+            currencySelector.innerHTML = newHTML;
+            currencySelector.style.position = 'relative';
+            
+            // Add click event to toggle
+            const toggle = currencySelector.querySelector('.dropdown-toggle');
+            const dropdown = document.getElementById('currency-dropdown');
+            
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            // Add click events to currency options
+            const currencyLinks = dropdown.querySelectorAll('a');
+            currencyLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const currency = this.getAttribute('data-currency');
+                    const currencyText = this.textContent;
+                    
+                    // Update display
+                    document.getElementById('current-currency').textContent = currencyText;
+                    
+                    // Update localStorage
+                    localStorage.setItem('currency', currency);
+                    
+                    // Hide dropdown
+                    dropdown.style.display = 'none';
+                    
+                    // Reload page to apply changes
+                    location.reload();
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.currency-selector')) {
+                    dropdown.style.display = 'none';
+                }
+            });
+            
+            console.log('Currency dropdown fix applied successfully!');
+        }
+    });
+&lt;/script&gt;
+        </pre>
+    </div>
+    
+    <button class="btn" onclick="copyToClipboard()">Copy Fix to Clipboard</button>
+    
+    <script>
+        function copyToClipboard() {
+            const fixCode = `
+<script>
+    // Direct fix for currency dropdown
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create completely new dropdown HTML
+        const newHTML = \`
+            <button class="dropdown-toggle" style="display: flex; align-items: center; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px 12px;">
+                <i class="fas fa-coins"></i> <span id="current-currency">ILS ₪</span> <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="currency-dropdown" style="display: none; position: absolute; top: 100%; left: 0; background-color: white; border: 1px solid #e1e1e1; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 150px; z-index: 9999;">
+                <a href="#" data-currency="ILS" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">ILS ₪</a>
+                <a href="#" data-currency="USD" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">USD $</a>
+                <a href="#" data-currency="EUR" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">EUR €</a>
+                <a href="#" data-currency="GBP" style="display: block; padding: 8px 12px; color: #333; text-decoration: none;">GBP £</a>
+            </div>
+        \`;
+        
+        // Replace the content of currency-selector
+        const currencySelector = document.querySelector('.currency-selector');
+        if (currencySelector) {
+            currencySelector.innerHTML = newHTML;
+            currencySelector.style.position = 'relative';
+            
+            // Add click event to toggle
+            const toggle = currencySelector.querySelector('.dropdown-toggle');
+            const dropdown = document.getElementById('currency-dropdown');
+            
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            // Add click events to currency options
+            const currencyLinks = dropdown.querySelectorAll('a');
+            currencyLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const currency = this.getAttribute('data-currency');
+                    const currencyText = this.textContent;
+                    
+                    // Update display
+                    document.getElementById('current-currency').textContent = currencyText;
+                    
+                    // Update localStorage
+                    localStorage.setItem('currency', currency);
+                    
+                    // Hide dropdown
+                    dropdown.style.display = 'none';
+                    
+                    // Reload page to apply changes
+                    location.reload();
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.currency-selector')) {
+                    dropdown.style.display = 'none';
+                }
+            });
+            
+            console.log('Currency dropdown fix applied successfully!');
+        }
+    });
+</script>
+            `;
+            
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = fixCode;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            
+            alert('Fix code copied to clipboard! Paste it just before the closing </body> tag in your index.html file.');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Dropdown Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        
+        .currency-selector {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            color: #777;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 8px 0;
+            min-width: 150px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 12px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Currency Dropdown Example</h1>
+    
+    <div class="currency-selector">
+        <button class="dropdown-toggle">
+            <i class="fas fa-coins"></i> ILS ₪ <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-menu">
+            <a href="#" data-currency="ILS">ILS ₪</a>
+            <a href="#" data-currency="USD">USD $</a>
+            <a href="#" data-currency="EUR">EUR €</a>
+            <a href="#" data-currency="GBP">GBP £</a>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <h2>How to Fix Your Currency Dropdown</h2>
+        <p>This example demonstrates a working currency dropdown menu with all options (ILS, USD, EUR, GBP) properly displayed.</p>
+        
+        <h3>Step 1: Update Your CSS</h3>
+        <p>Make sure your dropdown CSS has these key properties:</p>
+        <pre>
+.currency-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    z-index: 1000;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Remove hover behavior */
+.dropdown-toggle:hover .dropdown-menu {
+    display: none;
+}
+        </pre>
+        
+        <h3>Step 2: Update Your JavaScript</h3>
+        <p>Ensure your JavaScript properly toggles the dropdown:</p>
+        <pre>
+document.addEventListener('DOMContentLoaded', function() {
+    const currencyToggle = document.querySelector('.currency-selector .dropdown-toggle');
+    const currencyMenu = document.querySelector('.currency-selector .dropdown-menu');
+    
+    if (currencyToggle && currencyMenu) {
+        // Toggle dropdown on click
+        currencyToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            currencyMenu.classList.toggle('show');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.currency-selector')) {
+                currencyMenu.classList.remove('show');
+            }
+        });
+    }
+});
+        </pre>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currencyToggle = document.querySelector('.currency-selector .dropdown-toggle');
+            const currencyMenu = document.querySelector('.currency-selector .dropdown-menu');
+            
+            if (currencyToggle && currencyMenu) {
+                // Toggle dropdown on click
+                currencyToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    currencyMenu.classList.toggle('show');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.currency-selector')) {
+                        currencyMenu.classList.remove('show');
+                    }
+                });
+                
+                // Handle currency selection
+                const currencyLinks = document.querySelectorAll('.currency-selector .dropdown-menu a');
+                currencyLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const currency = this.getAttribute('data-currency');
+                        alert('Selected currency: ' + currency);
+                        currencyMenu.classList.remove('show');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

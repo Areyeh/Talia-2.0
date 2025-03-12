@@ -1153,3 +1153,5 @@ section {
         flex-wrap: wrap;
     }
 }
+.dropdown-menu.show { display: block !important; }
+/* Dropdown Fix */\n.dropdown-menu.show { display: block !important; }\n.dropdown-toggle:hover .dropdown-menu { display: none !important; }\n

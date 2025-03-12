@@ -1,0 +1,26 @@
+/* Dropdown Menu Fix */
+.dropdown-toggle:hover .dropdown-menu {
+    display: none !important;
+}
+
+.dropdown-menu.show {
+    display: block !important;
+    z-index: 9999;
+}
+
+.currency-selector, .language-selector {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    min-width: 150px;
+    z-index: 1000;
+}

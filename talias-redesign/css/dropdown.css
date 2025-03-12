@@ -1,0 +1,18 @@
+/* Dropdown Menu Styles */
+.dropdown-menu.show {
+    display: block !important;
+}
+
+/* Add some animation */
+.dropdown-menu {
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.dropdown-menu.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}

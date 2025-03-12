@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talia's Art - Modern Art Gallery</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-top">
+                <div class="language-currency">
+                    <div class="language-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-globe"></i> English <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-lang="en">English</a>
+                            <a href="#" data-lang="he">עברית</a>
+                            <a href="#" data-lang="es">Español</a>
+                            <a href="#" data-lang="fr">Français</a>
+                        </div>
+                    </div>
+                    <div class="currency-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-coins"></i> ILS ₪ <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-currency="ILS">ILS ₪</a>
+                            <a href="#" data-currency="USD">USD $</a>
+                            <a href="#" data-currency="EUR">EUR €</a>
+                            <a href="#" data-currency="GBP">GBP £</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="logo">
+                    <a href="index.html">
+                        <h1>Talia's Art</h1>
+                    </a>
+                </div>
+                <div class="user-actions">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="account-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="cart-icon" id="cart-toggle">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.html" class="active">Artwork</a></li>
+                    <li><a href="handmade.html">Handmade</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="shipping.html">Shipping</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mini Cart Sidebar -->
+    <div class="mini-cart" id="mini-cart">
+        <div class="mini-cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" id="close-cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mini-cart-items">
+            <!-- Cart items will be dynamically added here -->
+            <div class="empty-cart-message">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <a href="index.html" class="btn-primary">Start Shopping</a>
+            </div>
+        </div>
+        <div class="mini-cart-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal:</span>
+                <span class="subtotal-amount">₪0.00</span>
+            </div>
+            <a href="cart.html" class="btn-secondary">View Cart</a>
+            <a href="checkout.html" class="btn-primary">Checkout</a>
+            <div class="payment-methods">
+                <p>We Accept:</p>
+                <div class="payment-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mini-cart-overlay" id="mini-cart-overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Artwork that tells a story</h2>
+                <p>Discover unique paintings, drawings, illustrations and handmade dolls</p>
+                <a href="#featured" class="btn-primary">Explore Collection</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section id="featured" class="featured-products">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Artwork</h2>
+                <p>Explore Talia's latest creations</p>
+            </div>
+            <div class="product-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="paintings">Paintings</button>
+                <button class="filter-btn" data-filter="illustrations">Illustrations</button>
+                <button class="filter-btn" data-filter="dolls">Handmade Dolls</button>
+            </div>
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="badge new">New</span>
+                        <img src="images/product1.jpg" alt="Summer Coast">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Summer Coast</h3>
+                        <p class="product-price">₪76.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Painting</span>
+                            <span class="product-size">29.5×21 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/product2.jpg" alt="Cold Lemonade">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Cold Lemonade</h3>
+                        <p class="product-price">₪76.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Painting</span>
+                            <span class="product-size">29.5×21 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="badge sale">Sale</span>
+                        <img src="images/product3.jpg" alt="Butterfly">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Butterfly</h3>
+                        <p class="product-price"><span class="original-price">₪90.00</span> ₪76.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Illustration</span>
+                            <span class="product-size">29.5×21 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/product4.jpg" alt="The Pigeon">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">The Pigeon</h3>
+                        <p class="product-price">₪76.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Illustration</span>
+                            <span class="product-size">29.5×21 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/product5.jpg" alt="Folksongs">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Folksongs</h3>
+                        <p class="product-price">₪76.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Painting</span>
+                            <span class="product-size">29.5×21 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/product6.jpg" alt="Julius">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Julius</h3>
+                        <p class="product-price">₪170.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Handmade Doll</span>
+                            <span class="product-size">30 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <span class="badge new">New</span>
+                        <img src="images/product7.jpg" alt="Strawberry Cake">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Strawberry Cake</h3>
+                        <p class="product-price">₪76.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Painting</span>
+                            <span class="product-size">29.5×21 cm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="images/product8.jpg" alt="Autumn Dance">
+                        <div class="product-actions">
+                            <button class="quick-view"><i class="fas fa-eye"></i></button>
+                            <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                            <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Autumn Dance</h3>
+                        <p class="product-price">₪76.00</p>
+                        <div class="product-meta">
+                            <span class="product-category">Painting</span>
+                            <span class="product-size">29.5×21 cm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="load-more">
+                <button class="btn-secondary">Load More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collection Showcase -->
+    <section class="collection-showcase">
+        <div class="container">
+            <div class="collection-grid">
+                <div class="collection-item large">
+                    <img src="images/collection1.jpg" alt="Paintings Collection">
+                    <div class="collection-content">
+                        <h3>Paintings</h3>
+                        <p>Vibrant colors and emotions</p>
+                        <a href="#" class="btn-outline">Explore</a>
+                    </div>
+                </div>
+                <div class="collection-item">
+                    <img src="images/collection2.jpg" alt="Illustrations Collection">
+                    <div class="collection-content">
+                        <h3>Illustrations</h3>
+                        <p>Whimsical stories</p>
+                        <a href="#" class="btn-outline">Explore</a>
+                    </div>
+                </div>
+                <div class="collection-item">
+                    <img src="images/collection3.jpg" alt="Handmade Dolls Collection">
+                    <div class="collection-content">
+                        <h3>Handmade Dolls</h3>
+                        <p>Unique characters</p>
+                        <a href="#" class="btn-outline">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artist Story Section -->
+    <section class="artist-story">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-image">
+                    <img src="images/artist.jpg" alt="Talia - Artist">
+                </div>
+                <div class="story-text">
+                    <h2>Meet Talia</h2>
+                    <p>Talia is an artist whose artwork is influenced by memories and yearnings of her childhood and innocence. She loves children's books, movies, and old cartoons.</p>
+                    <p>Each piece tells a story, capturing moments of joy, nostalgia, and the simple beauty of everyday life.</p>
+                    <a href="about.html" class="btn-secondary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Feed -->
+    <section class="instagram-feed">
+        <div class="container">
+            <div class="section-header">
+                <h2>Follow on Instagram</h2>
+                <p>@talias.art</p>
+            </div>
+            <div class="instagram-grid">
+                <a href="#" class="instagram-item">
+                    <img src="images/insta1.jpg" alt="Instagram Post">
+                    <div class="instagram-overlay">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                </a>
+                <a href="#" class="instagram-item">
+                    <img src="images/insta2.jpg" alt="Instagram Post">
+                    <div class="instagram-overlay">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                </a>
+                <a href="#" class="instagram-item">
+                    <img src="images/insta3.jpg" alt="Instagram Post">
+                    <div class="instagram-overlay">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                </a>
+                <a href="#" class="instagram-item">
+                    <img src="images/insta4.jpg" alt="Instagram Post">
+                    <div class="instagram-overlay">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                </a>
+                <a href="#" class="instagram-item">
+                    <img src="images/insta5.jpg" alt="Instagram Post">
+                    <div class="instagram-overlay">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Join Our Newsletter</h2>
+                <p>Subscribe to receive updates on new artwork, exhibitions, and special offers</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit" class="btn-primary">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Talia's Art</h3>
+                    <p>Artwork influenced by memories and yearnings of childhood and innocence.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#"><i class="fab fa-etsy"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Shop</h3>
+                    <ul>
+                        <li><a href="#">All Artwork</a></li>
+                        <li><a href="#">Paintings</a></li>
+                        <li><a href="#">Illustrations</a></li>
+                        <li><a href="#">Handmade Dolls</a></li>
+                        <li><a href="#">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Information</h3>
+                    <ul>
+                        <li><a href="#">About Talia</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@talias.art">info@talias.art</a></li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+972123456789">+972 12 345 6789</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Tel Aviv, Israel</li>
+                    </ul>
+                    <div class="payment-methods">
+                        <img src="images/payment-methods.png" alt="Payment Methods">
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Talia's Art. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quick View Modal -->
+    <div class="modal" id="quick-view-modal">
+        <div class="modal-content">
+            <button class="close-modal"><i class="fas fa-times"></i></button>
+            <div class="product-quick-view">
+                <div class="product-gallery">
+                    <img src="images/product1.jpg" alt="Product Image" class="main-image">
+                    <div class="thumbnail-gallery">
+                        <img src="images/product1.jpg" alt="Thumbnail 1" class="active">
+                        <img src="images/product1-2.jpg" alt="Thumbnail 2">
+                        <img src="images/product1-3.jpg" alt="Thumbnail 3">
+                    </div>
+                </div>
+                <div class="product-details">
+                    <h2>Summer Coast</h2>
+                    <p class="product-price">₪76.00</p>
+                    <div class="product-meta">
+                        <span><strong>Category:</strong> Painting</span>
+                        <span><strong>Size:</strong> 29.5×21 cm</span>
+                        <span><strong>Medium:</strong> Acrylic and pencils on paper</span>
+                    </div>
+                    <p class="product-description">A vibrant coastal scene capturing the essence of summer with warm colors and playful details. This artwork brings a sense of joy and nostalgia for sunny days by the sea.</p>
+                    <div class="product-options">
+                        <div class="option-group">
+                            <label>Size:</label>
+                            <div class="option-buttons">
+                                <button class="option-btn active">Original (29.5×21 cm)</button>
+                                <button class="option-btn">Print (A4)</button>
+                                <button class="option-btn">Print (A3)</button>
+                            </div>
+                        </div>
+                        <div class="option-group">
+                            <label>Quantity:</label>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <input type="number" value="1" min="1" max="10">
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-primary add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                        <button class="btn-outline wishlist-btn"><i class="far fa-heart"></i> Add to Wishlist</button>
+                    </div>
+                    <div class="product-meta-footer">
+                        <span><i class="fas fa-truck"></i> Free shipping on orders over ₪300</span>
+                        <span><i class="fas fa-shield-alt"></i> Secure payment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay"></div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+</html>
+    <script src=" js/currency-live.js\></script>

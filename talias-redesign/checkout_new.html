@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Talia's Art</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Checkout specific styles */
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .checkout-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-xl);
+            position: relative;
+        }
+        
+        .checkout-steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--light-background);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        
+        .step.active .step-number {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+        
+        .step-label {
+            font-weight: 500;
+            color: var(--light-text);
+        }
+        
+        .step.active .step-label {
+            color: var(--primary-color);
+        }
+        
+        .step.completed .step-label {
+            color: var(--success-color);
+        }
+        
+        .checkout-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .checkout-section h3 {
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-family: var(--body-font);
+            transition: border-color var(--transition-fast);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .payment-method {
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .payment-method.active {
+            border-color: var(--primary-color);
+            background-color: rgba(214, 140, 69, 0.05);
+        }
+        
+        .payment-method-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .payment-method-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .payment-method-title {
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .payment-method-description {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin: 0;
+        }
+        
+        .order-summary {
+            background-color: var(--light-background);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            position: sticky;
+            top: 100px;
+        }
+        
+        .order-summary h3 {
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .order-items {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .order-item {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .order-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .order-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .order-item-details {
+            flex-grow: 1;
+        }
+        
+        .order-item-title {
+            margin: 0 0 var(--spacing-xs);
+            font-size: 1rem;
+        }
+        
+        .order-item-meta {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        .order-item-price {
+            font-weight: 600;
+        }
+        
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .secure-checkout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-xl);
+            color: var(--success-color);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-top">
+                <div class="language-currency">
+                    <div class="language-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-globe"></i> English <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-lang="en">English</a>
+                            <a href="#" data-lang="he">עברית</a>
+                            <a href="#" data-lang="es">Español</a>
+                            <a href="#" data-lang="fr">Français</a>
+                        </div>
+                    </div>
+                    <div class="currency-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-coins"></i> ILS ₪ <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-currency="ILS">ILS ₪</a>
+                            <a href="#" data-currency="USD">USD $</a>
+                            <a href="#" data-currency="EUR">EUR €</a>
+                            <a href="#" data-currency="GBP">GBP £</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="logo">
+                    <a href="index.html">
+                        <h1>Talia's Art</h1>
+                    </a>
+                </div>
+                <div class="user-actions">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="account-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="cart-icon" id="cart-toggle">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.html">Artwork</a></li>
+                    <li><a href="handmade.html">Handmade</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="shipping.html">Shipping</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mini Cart Sidebar -->
+    <div class="mini-cart" id="mini-cart">
+        <div class="mini-cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" id="close-cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mini-cart-items">
+            <!-- Cart items will be dynamically added here -->
+            <div class="empty-cart-message">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <a href="index.html" class="btn-primary">Start Shopping</a>
+            </div>
+        </div>
+        <div class="mini-cart-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal:</span>
+                <span class="subtotal-amount">₪0.00</span>
+            </div>
+            <a href="cart.html" class="btn-secondary">View Cart</a>
+            <a href="checkout.html" class="btn-primary">Checkout</a>
+            <div class="payment-methods">
+                <p>We Accept:</p>
+                <div class="payment-icons">
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mini-cart-overlay" id="mini-cart-overlay"></div>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Checkout</h2>
+                <p>Complete your purchase securely</p>
+            </div>
+            
+            <div class="checkout-steps">
+                <div class="step completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <div class="step-label">Cart</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Information</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Shipping</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Payment</div>
+                </div>
+            </div>
+            
+            <div class="checkout-container">
+                <div class="checkout-form">
+                    <div class="checkout-section">
+                        <h3>Contact Information</h3>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="For delivery questions">
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-section">
+                        <h3>Shipping Address</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">First Name</label>
+                                <input type="text" id="first-name" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" id="last-name" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" class="form-control" placeholder="Street address, apartment, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label for="address2">Address Line 2 (Optional)</label>
+                            <input type="text" id="address2" class="form-control" placeholder="Apartment, suite, unit, etc.">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="postal-code">Postal Code</label>
+                                <input type="text" id="postal-code" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <select id="country" class="form-control">
+                                    <option value="">Select Country</option>
+                                    <option value="IL">Israel</option>
+                                    <option value="US">United States</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="AU">Australia</option>
+                                    <option value="FR">France</option>
+                                    <option value="DE">Germany</option>
+                                    <option value="IT">Italy</option>
+                                    <option value="ES">Spain</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State/Province</label>
+                                <input type="text" id="state" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-section">
+                        <h3>Payment Method</h3>
+                        <div class="payment-methods">
+                            <div class="payment-method active">
+                                <div class="payment-method-header">
+                                    <div class="payment-method-icon">
+                                        <i class="fab fa-paypal"></i>
+                                    </div>
+                                    <h4 class="payment-method-title">PayPal</h4>
+                                </div>
+                                <p class="payment-method-description">Pay securely with your PayPal account or credit card via PayPal</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-actions">
+                        <a href="cart.html" class="btn-outline">
+                            <i class="fas fa-arrow-left"></i> Return to Cart
+                        </a>
+                        <button class="btn-primary">Complete Order</button>
+                    </div>
+                    
+                    <div class="secure-checkout">
+                        <i class="fas fa-lock"></i> Your payment information is secure
+                    </div>
+                </div>
+                
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div class="order-items">
+                        <div class="order-item">
+                            <div class="order-item-image">
+                                <img src="images/product1.jpg" alt="Summer Coast">
+                            </div>
+                            <div class="order-item-details">
+                                <h4 class="order-item-title">Summer Coast</h4>
+                                <div class="order-item-meta">Qty: 1</div>
+                            </div>
+                            <div class="order-item-price">₪76.00</div>
+                        </div>
+                        <div class="order-item">
+                            <div class="order-item-image">
+                                <img src="images/product2.jpg" alt="Autumn Forest">
+                            </div>
+                            <div class="order-item-details">
+                                <h4 class="order-item-title">Autumn Forest</h4>
+                                <div class="order-item-meta">Qty: 1</div>
+                            </div>
+                            <div class="order-item-price">₪89.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-summary-row">
+                        <span>Subtotal</span>
+                        <span>₪165.00</span>
+                    </div>
+                    <div class="order-summary-row">
+                        <span>Shipping</span>
+                        <span>₪15.00</span>
+                    </div>
+                    <div class="order-total">
+                        <span>Total</span>
+                        <span>₪180.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Talia's Art</h3>
+                    <p>Bringing beauty and creativity to your space with handcrafted art and unique designs.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#"><i class="fab fa-etsy"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Shop</h3>
+                    <ul>
+                        <li><a href="#">All Products</a></li>
+                        <li><a href="#">Paintings</a></li>
+                        <li><a href="#">Prints</a></li>
+                        <li><a href="#">Handmade Items</a></li>
+                        <li><a href="#">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Information</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Talia's Art. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Checkout page specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load cart items from localStorage
+            function loadOrderItems() {
+                const orderItems = document.querySelector('.order-items');
+                const subtotalElement = document.querySelector('.order-summary-row:first-child span:last-child');
+                const totalElement = document.querySelector('.order-total span:last-child');
+                
+                if (orderItems && subtotalElement && totalElement) {
+                    // Get cart items from localStorage
+                    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                    
+                    if (cartItems.length > 0) {
+                        let itemsHTML = '';
+                        let subtotal = 0;
+                        
+                        cartItems.forEach(item => {
+                            // Extract numeric price
+                            const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
+                            subtotal += price * item.quantity;
+                            
+                            itemsHTML += `
+                                <div class="order-item">
+                                    <div class="order-item-image">
+                                        <img src="${item.image}" alt="${item.title}">
+                                    </div>
+                                    <div class="order-item-details">
+                                        <h4 class="order-item-title">${item.title}</h4>
+                                        <div class="order-item-meta">Qty: ${item.quantity}</div>
+                                    </div>
+                                    <div class="order-item-price">${item.price}</div>
+                                </div>
+                            `;
+                        });
+                        
+                        orderItems.innerHTML = itemsHTML;
+                        
+                        // Calculate shipping (simplified for demo)
+                        const shipping = subtotal > 150 ? 0 : 15;
+                        
+                        // Update subtotal and total
+                        subtotalElement.textContent = `₪${subtotal.toFixed(2)}`;
+                        document.querySelector('.order-summary-row:nth-child(2) span:last-child').textContent = 
+                            shipping === 0 ? 'Free' : `₪${shipping.toFixed(2)}`;
+                        totalElement.textContent = `₪${(subtotal + shipping).toFixed(2)}`;
+                    }
+                }
+            }
+            
+            // Load order items on page load
+            loadOrderItems();
+        });
+    </script>
+</body>
+</html>

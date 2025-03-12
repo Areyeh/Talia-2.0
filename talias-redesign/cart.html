@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Talia's Art</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Cart specific styles */
+        .cart-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .cart-items {
+            background-color: var(--background-color);
+            border-radius: var(--border-radius-lg);
+        }
+        
+        .cart-header {
+            display: grid;
+            grid-template-columns: 100px 2fr 1fr 1fr 50px;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 500;
+            color: var(--light-text);
+        }
+        
+        .cart-item {
+            display: grid;
+            grid-template-columns: 100px 2fr 1fr 1fr 50px;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+        }
+        
+        .cart-item-details h3 {
+            margin-bottom: var(--spacing-xs);
+            font-size: 1.1rem;
+        }
+        
+        .cart-item-meta {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .cart-item-price {
+            font-weight: 500;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cart-item-total {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .cart-item-remove {
+            color: var(--light-text);
+            transition: color var(--transition-fast);
+        }
+        
+        .cart-item-remove:hover {
+            color: var(--error-color);
+        }
+        
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-lg) 0;
+        }
+        
+        .cart-summary {
+            background-color: var(--light-background);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            position: sticky;
+            top: 100px;
+        }
+        
+        .cart-summary h3 {
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .cart-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: var(--spacing-md);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .cart-summary .btn-primary {
+            width: 100%;
+            margin-top: var(--spacing-md);
+        }
+        
+        .cart-summary .btn-outline {
+            width: 100%;
+            margin-top: var(--spacing-sm);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: var(--spacing-xxl) 0;
+        }
+        
+        .empty-cart i {
+            font-size: 4rem;
+            color: var(--light-text);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .empty-cart h3 {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .empty-cart p {
+            color: var(--light-text);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .cart-coupon {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .cart-coupon input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+        }
+        
+        .save-for-later {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-top: var(--spacing-xs);
+            cursor: pointer;
+        }
+        
+        .save-for-later:hover {
+            color: var(--primary-color);
+        }
+        
+        .saved-items {
+            margin-top: var(--spacing-xxl);
+        }
+        
+        .saved-items h3 {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .payment-icons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+            font-size: 1.5rem;
+            color: var(--light-text);
+        }
+        
+        @media (max-width: 768px) {
+            .cart-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-header {
+                display: none;
+            }
+            
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                grid-template-rows: auto auto auto;
+                gap: var(--spacing-sm);
+            }
+            
+            .cart-item-image {
+                grid-row: span 3;
+            }
+            
+            .cart-item-details {
+                grid-column: 2;
+            }
+            
+            .cart-item-quantity {
+                grid-column: 2;
+            }
+            
+            .cart-item-price, .cart-item-total {
+                grid-column: 2;
+            }
+            
+            .cart-item-remove {
+                position: absolute;
+                top: var(--spacing-sm);
+                right: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-top">
+                <div class="language-currency">
+                    <div class="language-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-globe"></i> English <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-lang="en">English</a>
+                            <a href="#" data-lang="he">עברית</a>
+                            <a href="#" data-lang="es">Español</a>
+                            <a href="#" data-lang="fr">Français</a>
+                        </div>
+                    </div>
+                    <div class="currency-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-coins"></i> ILS ₪ <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-currency="ILS">ILS ₪</a>
+                            <a href="#" data-currency="USD">USD $</a>
+                            <a href="#" data-currency="EUR">EUR €</a>
+                            <a href="#" data-currency="GBP">GBP £</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="logo">
+                    <a href="index.html">
+                        <h1>Talia's Art</h1>
+                    </a>
+                </div>
+                <div class="user-actions">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="account-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="cart-icon" id="cart-toggle">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.html">Artwork</a></li>
+                    <li><a href="handmade.html">Handmade</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="shipping.html">Shipping</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mini Cart Sidebar -->
+    <div class="mini-cart" id="mini-cart">
+        <div class="mini-cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" id="close-cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mini-cart-items">
+            <!-- Cart items will be dynamically added here -->
+            <div class="empty-cart-message">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <a href="index.html" class="btn-primary">Start Shopping</a>
+            </div>
+        </div>
+        <div class="mini-cart-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal:</span>
+                <span class="subtotal-amount">₪0.00</span>
+            </div>
+            <a href="cart.html" class="btn-secondary">View Cart</a>
+            <a href="checkout.html" class="btn-primary">Checkout</a>
+            <div class="payment-methods">
+                <p>We Accept:</p>
+                <div class="payment-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mini-cart-overlay" id="mini-cart-overlay"></div>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Shopping Cart</h2>
+                <p>Review your items before checkout</p>
+            </div>
+            
+            <div id="cart-content">
+                <!-- This will be populated with either the cart items or empty cart message -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Talia's Art</h3>
+                    <p>Unique paintings, drawings, illustrations and handmade dolls created with love and passion.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#"><i class="fab fa-etsy"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Artwork</a></li>
+                        <li><a href="handmade.html">Handmade</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="shipping.html">Shipping & Delivery</a></li>
+                        <li><a href="returns.html">Returns & Exchanges</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit" class="btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Talia's Art. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load cart items from localStorage
+            function loadCartItems() {
+                const cartContent = document.getElementById('cart-content');
+                
+                if (localStorage.getItem('cartItems')) {
+                    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+                    
+                    if (cartItems.length > 0) {
+                        // Cart has items
+                        let cartHTML = `
+                            <div class="cart-container">
+                                <div class="cart-items">
+                                    <div class="cart-header">
+                                        <div>Image</div>
+                                        <div>Product</div>
+                                        <div>Price</div>
+                                        <div>Quantity</div>
+                                        <div></div>
+                                    </div>
+                        `;
+                        
+                        let subtotal = 0;
+                        
+                        cartItems.forEach(item => {
+                            // Extract numeric price
+                            const price = parseFloat(item.price.replace(/[^\d.]/g, ''));
+                            const itemTotal = price * item.quantity;
+                            subtotal += itemTotal;
+                            
+                            cartHTML += `
+                                <div class="cart-item" data-id="${item.id}">
+                                    <div class="cart-item-image">
+                                        <img src="${item.image}" alt="${item.title}">
+                                    </div>
+                                    <div class="cart-item-details">
+                                        <h3>${item.title}</h3>
+                                        <div class="cart-item-meta">
+                                            <span class="product-category">Painting</span>
+                                            <span class="product-size">29.5×21 cm</span>
+                                        </div>
+                                        <div class="save-for-later">
+                                            <i class="far fa-heart"></i> Save for later
+                                        </div>
+                                    </div>
+                                    <div class="cart-item-price">${item.price}</div>
+                                    <div class="cart-item-quantity">
+                                        <div class="quantity-selector">
+                                            <button class="quantity-btn minus">-</button>
+                                            <input type="number" value="${item.quantity}" min="1" max="10">
+                                            <button class="quantity-btn plus">+</button>
+                                        </div>
+                                    </div>
+                                    <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            `;
+                        });
+                        
+                        cartHTML += `
+                                </div>
+                                <div class="cart-actions">
+                                    <a href="index.html" class="btn-outline">
+                                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                                    </a>
+                                    <div class="cart-coupon">
+                                        <input type="text" placeholder="Coupon code">
+                                        <button class="btn-secondary">Apply Coupon</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="cart-summary">
+                                <h3>Order Summary</h3>
+                                <div class="cart-summary-row">
+                                    <span>Subtotal</span>
+                                    <span>₪${subtotal.toFixed(2)}</span>
+                                </div>
+                                <div class="cart-summary-row">
+                                    <span>Shipping</span>
+                                    <span>₪20.00</span>
+                                </div>
+                                <div class="cart-total">
+                                    <span>Total</span>
+                                    <span>₪${(subtotal + 20).toFixed(2)}</span>
+                                </div>
+                                <a href="checkout.html" class="btn-primary">Proceed to Checkout</a>
+                                <button class="btn-outline">Update Cart</button>
+                                
+                                <div class="payment-methods">
+                                    <p>We Accept:</p>
+                                    <div class="payment-icons">
+                                        <i class="fab fa-cc-visa"></i>
+                                        <i class="fab fa-cc-mastercard"></i>
+                                        <i class="fab fa-cc-amex"></i>
+                                        <i class="fab fa-cc-paypal"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        cartContent.innerHTML = cartHTML;
+                        
+                        // Add event listeners for quantity buttons
+                        const minusButtons = document.querySelectorAll('.quantity-btn.minus');
+                        const plusButtons = document.querySelectorAll('.quantity-btn.plus');
+                        const updateButton = document.querySelector('.btn-outline');
+                        
+                        minusButtons.forEach(button => {
+                            button.addEventListener('click', function() {
+                                const input = this.nextElementSibling;
+                                let value = parseInt(input.value);
+                                
+                                if (value > 1) {
+                                    value--;
+                                    input.value = value;
+                                }
+                            });
+                        });
+                        
+                        plusButtons.forEach(button => {
+                            button.addEventListener('click', function() {
+                                const input = this.previousElementSibling;
+                                let value = parseInt(input.value);
+                                const max = parseInt(input.getAttribute('max')) || 10;
+                                
+                                if (value < max) {
+                                    value++;
+                                    input.value = value;
+                                }
+                            });
+                        });
+                        
+                        if (updateButton) {
+                            updateButton.addEventListener('click', updateCart);
+                        }
+                        
+                    } else {
+                        // Empty cart
+                        showEmptyCart();
+                    }
+                } else {
+                    // No cart in localStorage
+                    showEmptyCart();
+                }
+            }
+            
+            function showEmptyCart() {
+                const cartContent = document.getElementById('cart-content');
+                
+                cartContent.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Your cart is empty</h3>
+                        <p>Looks like you haven't added any items to your cart yet.</p>
+                        <a href="index.html" class="btn-primary">Start Shopping</a>
+                    </div>
+                `;
+            }
+            
+            // Update cart quantities
+            function updateCart() {
+                if (localStorage.getItem('cartItems')) {
+                    const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+                    const quantityInputs = document.querySelectorAll('.cart-item .quantity-selector input');
+                    
+                    quantityInputs.forEach((input, index) => {
+                        cartItems[index].quantity = parseInt(input.value);
+                    });
+                    
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                    
+                    // Reload cart to update totals
+                    loadCartItems();
+                    
+                    // Show notification
+                    showNotification('Cart updated successfully', 'success');
+                }
+            }
+            
+            // Show notification
+            function showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                        <p>${message}</p>
+                    </div>
+                    <button class="close-notification"><i class="fas fa-times"></i></button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Show notification
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 10);
+                
+                // Auto hide after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, 3000);
+                
+                // Close button
+                const closeButton = notification.querySelector('.close-notification');
+                closeButton.addEventListener('click', () => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                });
+            }
+            
+            // Remove item from cart
+            window.removeFromCart = function(itemId) {
+                if (localStorage.getItem('cartItems')) {
+                    let cartItems = JSON.parse(localStorage.getItem('cartItems'));
+                    
+                    // Filter out the item to remove
+                    cartItems = cartItems.filter(item => item.id !== itemId);
+                    
+                    // Update localStorage
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                    
+                    // Update cart count
+                    const cartCount = document.querySelector('.cart-count');
+                    if (cartCount) {
+                        cartCount.textContent = cartItems.length;
+                    }
+                    
+                    // Reload cart
+                    loadCartItems();
+                    
+                    // Show notification
+                    showNotification('Item removed from cart', 'success');
+                }
+            };
+            
+            // Load cart items on page load
+            loadCartItems();
+        });
+    </script>
+</body>
+</html>
+    <script src=" js/currency-live.js\></script>

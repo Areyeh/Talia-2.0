@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Coast - Talia's Art</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for product page */
+        .product-container {
+            display: flex;
+            gap: var(--spacing-xl);
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .product-gallery {
+            flex: 1;
+        }
+        
+        .product-details {
+            flex: 1;
+        }
+        
+        .product-breadcrumb {
+            margin-bottom: var(--spacing-md);
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        .product-breadcrumb a {
+            color: var(--light-text);
+        }
+        
+        .product-breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+        
+        .product-breadcrumb span {
+            margin: 0 var(--spacing-xs);
+        }
+        
+        .product-title {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .product-description {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .product-meta {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .product-meta div {
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .product-options {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .option-group {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .option-group label {
+            display: block;
+            margin-bottom: var(--spacing-xs);
+            font-weight: 500;
+        }
+        
+        .option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+        
+        .option-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            transition: all var(--transition-fast);
+        }
+        
+        .option-btn.active,
+        .option-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            width: fit-content;
+        }
+        
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-background);
+        }
+        
+        .quantity-selector input {
+            width: 50px;
+            height: 35px;
+            text-align: center;
+            border: none;
+            border-left: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .product-meta-footer {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .product-tabs {
+            margin-top: var(--spacing-xl);
+        }
+        
+        .tabs-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .tab-btn {
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .related-products {
+            margin-top: var(--spacing-xxl);
+        }
+        
+        .related-products .products-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        
+        .payment-options {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .payment-options h4 {
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .payment-icons {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: center;
+        }
+        
+        .payment-icons i {
+            font-size: 2rem;
+            color: var(--light-text);
+        }
+        
+        .paypal-button {
+            background-color: #0070ba;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius-md);
+            font-weight: 500;
+            margin-top: var(--spacing-md);
+        }
+        
+        .paypal-button:hover {
+            background-color: #003087;
+            color: white;
+        }
+        
+        .paypal-button i {
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 992px) {
+            .product-container {
+                flex-direction: column;
+            }
+            
+            .related-products .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-top">
+                <div class="language-currency">
+                    <div class="language-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-globe"></i> English <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-lang="en">English</a>
+                            <a href="#" data-lang="he">עברית</a>
+                            <a href="#" data-lang="es">Español</a>
+                            <a href="#" data-lang="fr">Français</a>
+                        </div>
+                    </div>
+                    <div class="currency-selector">
+                        <button class="dropdown-toggle">
+                            <i class="fas fa-coins"></i> ILS ₪ <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" data-currency="ILS">ILS ₪</a>
+                            <a href="#" data-currency="USD">USD $</a>
+                            <a href="#" data-currency="EUR">EUR €</a>
+                            <a href="#" data-currency="GBP">GBP £</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="logo">
+                    <a href="index.html">
+                        <h1>Talia's Art</h1>
+                    </a>
+                </div>
+                <div class="user-actions">
+                    <div class="search-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="account-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="cart-icon" id="cart-toggle">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.html" class="active">Artwork</a></li>
+                    <li><a href="handmade.html">Handmade</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="shipping.html">Shipping</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mini Cart Sidebar -->
+    <div class="mini-cart" id="mini-cart">
+        <div class="mini-cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" id="close-cart">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mini-cart-items">
+            <!-- Cart items will be dynamically added here -->
+            <div class="empty-cart-message">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Your cart is empty</p>
+                <a href="index.html" class="btn-primary">Start Shopping</a>
+            </div>
+        </div>
+        <div class="mini-cart-footer">
+            <div class="cart-subtotal">
+                <span>Subtotal:</span>
+                <span class="subtotal-amount">₪0.00</span>
+            </div>
+            <a href="cart.html" class="btn-secondary">View Cart</a>
+            <a href="checkout.html" class="btn-primary">Checkout</a>
+            <div class="payment-methods">
+                <p>We Accept:</p>
+                <div class="payment-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mini-cart-overlay" id="mini-cart-overlay"></div>
+
+    <!-- Product Section -->
+    <section class="product-section">
+        <div class="container">
+            <div class="product-breadcrumb">
+                <a href="index.html">Home</a> <span>/</span> <a href="index.html">Artwork</a> <span>/</span> <a href="#">Paintings</a> <span>/</span> Summer Coast
+            </div>
+            <div class="product-container">
+                <div class="product-gallery">
+                    <img src="images/product1.jpg" alt="Summer Coast" class="main-image">
+                    <div class="thumbnail-gallery">
+                        <img src="images/product1.jpg" alt="Thumbnail 1" class="active">
+                        <img src="images/product1-2.jpg" alt="Thumbnail 2">
+                        <img src="images/product1-3.jpg" alt="Thumbnail 3">
+                    </div>
+                </div>
+                <div class="product-details">
+                    <h1 class="product-title">Summer Coast</h1>
+                    <p class="product-price">₪76.00</p>
+                    <div class="product-meta">
+                        <div><strong>Category:</strong> Painting</div>
+                        <div><strong>Size:</strong> 29.5×21 cm</div>
+                        <div><strong>Medium:</strong> Acrylic and pencils on paper</div>
+                        <div><strong>Year:</strong> 2024</div>
+                    </div>
+                    <div class="product-description">
+                        <p>A vibrant coastal scene capturing the essence of summer with warm colors and playful details. This artwork brings a sense of joy and nostalgia for sunny days by the sea.</p>
+                        <p>Each piece is hand-painted by Talia and reflects her unique artistic style influenced by memories and yearnings of childhood and innocence.</p>
+                    </div>
+                    <div class="product-options">
+                        <div class="option-group">
+                            <label>Size:</label>
+                            <div class="option-buttons">
+                                <button class="option-btn active">Original (29.5×21 cm)</button>
+                                <button class="option-btn">Print (A4)</button>
+                                <button class="option-btn">Print (A3)</button>
+                            </div>
+                        </div>
+                        <div class="option-group">
+                            <label>Quantity:</label>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus"><i class="fas fa-minus"></i></button>
+                                <input type="number" value="1" min="1" max="10">
+                                <button class="quantity-btn plus"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-primary add-to-cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                        <button class="btn-outline wishlist-btn"><i class="far fa-heart"></i> Add to Wishlist</button>
+                    </div>
+                    <div class="product-meta-footer">
+                        <span><i class="fas fa-truck"></i> Free shipping on orders over ₪300</span>
+                        <span><i class="fas fa-shield-alt"></i> Secure payment</span>
+                        <span><i class="fas fa-undo"></i> 14-day return policy</span>
+                    </div>
+                    <div class="payment-options">
+                        <h4>Payment Options</h4>
+                        <div class="payment-icons">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-amex"></i>
+                            <i class="fab fa-cc-discover"></i>
+                        </div>
+                        <a href="#" class="paypal-button">
+                            <i class="fab fa-paypal"></i> Pay with PayPal
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Tabs -->
+            <div class="product-tabs">
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="description">Description</button>
+                    <button class="tab-btn" data-tab="details">Additional Details</button>
+                    <button class="tab-btn" data-tab="shipping">Shipping & Returns</button>
+                </div>
+                <div class="tab-content active" id="description">
+                    <h3>Product Description</h3>
+                    <p>Summer Coast is a vibrant and colorful artwork that captures the essence of a perfect summer day by the sea. The painting features a coastal scene with warm sand, blue waters, and playful details that evoke a sense of nostalgia and joy.</p>
+                    <p>This artwork is part of Talia's Summer Collection, which celebrates the simple pleasures of the season through vivid colors and whimsical imagery. Each piece in this collection is hand-painted using acrylic and pencils on high-quality paper.</p>
+                    <p>The original artwork measures 29.5×21 cm and comes unframed, allowing you to choose a frame that complements your space. Prints are also available in A4 and A3 sizes, printed on premium archival paper to ensure longevity and color accuracy.</p>
+                </div>
+                <div class="tab-content" id="details">
+                    <h3>Additional Details</h3>
+                    <ul>
+                        <li><strong>Title:</strong> Summer Coast</li>
+                        <li><strong>Artist:</strong> Talia</li>
+                        <li><strong>Year:</strong> 2024</li>
+                        <li><strong>Medium:</strong> Acrylic and pencils on paper</li>
+                        <li><strong>Dimensions:</strong> 29.5×21 cm (original)</li>
+                        <li><strong>Print Options:</strong> A4 (21×29.7 cm), A3 (29.7×42 cm)</li>
+                        <li><strong>Signed:</strong> Yes, by the artist</li>
+                        <li><strong>Certificate of Authenticity:</strong> Included with original artwork</li>
+                        <li><strong>Care Instructions:</strong> Keep away from direct sunlight and moisture. Frame under glass for protection.</li>
+                    </ul>
+                </div>
+                <div class="tab-content" id="shipping">
+                    <h3>Shipping & Returns</h3>
+                    <h4>Shipping</h4>
+                    <p>We ship worldwide using reliable courier services. All artwork is carefully packaged to ensure safe delivery.</p>
+                    <ul>
+                        <li><strong>Israel:</strong> 2-3 business days</li>
+                        <li><strong>Europe:</strong> 5-7 business days</li>
+                        <li><strong>North America:</strong> 7-10 business days</li>
+                        <li><strong>Rest of the World:</strong> 10-14 business days</li>
+                    </ul>
+                    <p>Free shipping on orders over ₪300. Standard shipping rates apply for orders below this amount.</p>
+                    
+                    <h4>Returns</h4>
+                    <p>We want you to be completely satisfied with your purchase. If for any reason you are not happy with your artwork, you may return it within 14 days of receipt for a full refund or exchange.</p>
+                    <p>Please note that the artwork must be returned in its original condition and packaging. Return shipping costs are the responsibility of the customer unless the return is due to a defect or error on our part.</p>
+                </div>
+            </div>
+            
+            <!-- Related Products -->
+            <div class="related-products">
+                <div class="section-header">
+                    <h2>You May Also Like</h2>
+                    <p>Explore more artwork from Talia's collection</p>
+                </div>
+                <div class="products-grid">
+                    <!-- Product 1 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="images/product2.jpg" alt="Cold Lemonade">
+                            <div class="product-actions">
+                                <button class="quick-view"><i class="fas fa-eye"></i></button>
+                                <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                                <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Cold Lemonade</h3>
+                            <p class="product-price">₪76.00</p>
+                            <div class="product-meta">
+                                <span class="product-category">Painting</span>
+                                <span class="product-size">29.5×21 cm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="badge sale">Sale</span>
+                            <img src="images/product3.jpg" alt="Butterfly">
+                            <div class="product-actions">
+                                <button class="quick-view"><i class="fas fa-eye"></i></button>
+                                <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                                <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Butterfly</h3>
+                            <p class="product-price"><span class="original-price">₪90.00</span> ₪76.00</p>
+                            <div class="product-meta">
+                                <span class="product-category">Illustration</span>
+                                <span class="product-size">29.5×21 cm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="images/product4.jpg" alt="The Pigeon">
+                            <div class="product-actions">
+                                <button class="quick-view"><i class="fas fa-eye"></i></button>
+                                <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                                <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">The Pigeon</h3>
+                            <p class="product-price">₪76.00</p>
+                            <div class="product-meta">
+                                <span class="product-category">Illustration</span>
+                                <span class="product-size">29.5×21 cm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="images/product5.jpg" alt="Folksongs">
+                            <div class="product-actions">
+                                <button class="quick-view"><i class="fas fa-eye"></i></button>
+                                <button class="add-to-wishlist"><i class="far fa-heart"></i></button>
+                                <button class="add-to-cart"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Folksongs</h3>
+                            <p class="product-price">₪76.00</p>
+                            <div class="product-meta">
+                                <span class="product-category">Painting</span>
+                                <span class="product-size">29.5×21 cm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Talia's Art</h3>
+                    <p>Artwork influenced by memories and yearnings of childhood and innocence.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                        <a href="#"><i class="fab fa-etsy"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Shop</h3>
+                    <ul>
+                        <li><a href="#">All Artwork</a></li>
+                        <li><a href="#">Paintings</a></li>
+                        <li><a href="#">Illustrations</a></li>
+                        <li><a href="#">Handmade Dolls</a></li>
+                        <li><a href="#">New Arrivals</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Information</h3>
+                    <ul>
+                        <li><a href="#">About Talia</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@talias.art">info@talias.art</a></li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+972123456789">+972 12 345 6789</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Tel Aviv, Israel</li>
+                    </ul>
+                    <div class="payment-methods">
+                        <img src="images/payment-methods.png" alt="Payment Methods">
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Talia's Art. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script>
+        // Product Tabs Functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

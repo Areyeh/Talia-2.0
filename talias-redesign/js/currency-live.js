@@ -166,5 +166,68 @@ document.addEventListener('DOMContentLoaded', function() {
                     return '₪';
             }
         }
+        
+        // Function to show notifications
+        function showNotification(message, type = 'info') {
+            // Create notification element if it doesn't exist
+            let notification = document.querySelector('.currency-notification');
+            
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.className = 'currency-notification';
+                document.body.appendChild(notification);
+                
+                // Add styles if not already in stylesheet
+                if (!document.querySelector('#currency-notification-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'currency-notification-styles';
+                    style.textContent = `
+                        .currency-notification {
+                            position: fixed;
+                            bottom: 20px;
+                            right: 20px;
+                            padding: 12px 20px;
+                            background-color: #333;
+                            color: white;
+                            border-radius: 4px;
+                            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                            z-index: 1000;
+                            opacity: 0;
+                            transform: translateY(20px);
+                            transition: opacity 0.3s, transform 0.3s;
+                            max-width: 300px;
+                        }
+                        .currency-notification.show {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                        .currency-notification.info {
+                            background-color: #2196F3;
+                        }
+                        .currency-notification.success {
+                            background-color: #4CAF50;
+                        }
+                        .currency-notification.error {
+                            background-color: #F44336;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+            }
+            
+            // Set content and type
+            notification.textContent = message;
+            notification.className = 'currency-notification ' + type;
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
     }
 });
